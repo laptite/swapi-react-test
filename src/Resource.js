@@ -1,4 +1,5 @@
 import React from 'react';
+import TableRow from './TableRow.js'
 import './Resource.css'
 
 const Resource = ({ tableRow }) => {
@@ -16,12 +17,7 @@ const Resource = ({ tableRow }) => {
 				{
 					Object.entries(tableRow).map((tableData, i) => {
 						if (i > 0) {
-							return(
-								<div className="tr">	
-									<div className="td">{tableData[0].replace(/_/g, " ")}</div>
-									<div className="td">{tableData[1]}</div>
-								</div>
-							)
+							return <TableRow key={`tr-${i}`} tableData={tableData} />
 						}
 					})
 				}

@@ -9,7 +9,7 @@ const ResourceList = ({ sectionObj }) => {
 		<div className="table">
 			{
 				Object.entries(tableRows).map((data, i) => {
-					return <Resource key={`tr-${i}`} tableRow={ data[1] }/>
+					return <Resource key={`tg-${i}`} tableRow={ data[1] }/>
 				})
 			}
 		</div>
