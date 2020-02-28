@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header.js';
-import Resource from './Resource.js'
+import ResourceList from './ResourceList.js'
 import './App.css'
 
 class App extends Component {
@@ -18,12 +18,16 @@ class App extends Component {
 		const swapiRoot = await fetch("https://swapi.co/api/");
 		const response = await swapiRoot.json();
 		const resources = Object.entries(response)
-		const defaultResource = resources[0]
-		const defaultSectionObj = this.fetchSection(defaultResource[1])
-		
+		const defaultResource = Object.keys(response)[0]
+		const defaultURL = Object.values(response)[0]
+
+		const swapiResource = await fetch(`${defaultURL}?format=json`)
+		const response2 = await swapiResource.json()
+		const defaultSectionObj = response2.results
+
 		this.setState({ 
 			resources: resources,
-			liveResource: defaultResource[0],
+			liveResource: defaultResource,
 			sectionObj: defaultSectionObj
 		})
 	}
@@ -31,42 +35,40 @@ class App extends Component {
 	onResourceChange = (event) => {
 		const selectedResource = event.target.getAttribute("category")
 		const resourceURL = event.target.getAttribute("category-url")
-		const selectedObject = this.fetchSection(resourceURL)
+		this.setState({ liveResource: selectedResource })
 
-		this.setState({ 
-			liveResource: selectedResource,
-			sectionObj: selectedObject
-		})
-	}
-
-	fetchSection = (url) => {
-		if (typeof(url) !== 'undefined') {
-			const jsonURL = `${url}?format=json`
-			const objArray = fetch(jsonURL)
+		if (typeof(resourceURL) !== 'undefined') {
+			const selectedObject = fetch(`${resourceURL}?format=json`)
 				.then( response => response.json() )
-				.then( data => data.results )
-				.then( promise => {
-					for (let [key, value] of Object.entries(promise)) {
-					  console.log(`promise -- ${key}: ${value}`);
-					}
+				.then( data => {
+					this.setState({ sectionObj: data.results })
 				})
-			return objArray
 		}
 	}
 
   render() {
   	const { resources, liveResource, sectionObj } = this.state;
 
-    return (
-			<div>
+    return(
+    	<div className="app">
     		<Header 
     			resources={ resources }
     			selection={ this.onResourceChange }
     		/>
-    		<div className="resource-body">
-					<h1>{ liveResource }</h1>
-	    		<Resource sectionObject={ sectionObj } />
-				</div>
+    		<div className="section-header resource-body">
+					{
+						!sectionObj.length ?
+							<div className="resource-content">
+								<h1>Loading...</h1>
+							</div>:
+						(
+			    		<div className="resource-content">
+								<h1>{ liveResource }</h1>
+				    		<ResourceList sectionObj={ sectionObj } />
+							</div>
+						)
+					}
+					</div>
     	</div>
     );
   }
