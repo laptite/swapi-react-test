@@ -35,13 +35,15 @@ class App extends Component {
 	onResourceChange = (event) => {
 		const selectedResource = event.target.getAttribute("category")
 		const resourceURL = event.target.getAttribute("category-url")
-		this.setState({ liveResource: selectedResource })
 
 		if (typeof(resourceURL) !== 'undefined') {
-			const selectedObject = fetch(`${resourceURL}?format=json`)
+			return fetch(`${resourceURL}?format=json`)
 				.then( response => response.json() )
 				.then( data => {
-					this.setState({ sectionObj: data.results })
+					this.setState({ 
+						liveResource: selectedResource,
+						sectionObj: data.results
+					})
 				})
 		}
 	}
