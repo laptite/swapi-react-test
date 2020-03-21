@@ -1,0 +1,30 @@
+.thead, .tbody {
+	display: table-header-group;
+	width: 100%;
+}
+
+.tr, .th {
+	display: table-row;
+}
+
+.td {
+	display: table-cell;
+	padding: 5px 20px;
+	text-align: left;
+	font-size: 14px;
+}
+
+.td:first-child {
+	min-width: 15vw;
+}
+
+.td:last-child {
+	min-width: 85vw;	
+}
+
+.th {
+	text-transform: capitalize;
+	font-weight: 600;
+	white-space: nowrap;
+	background-color: greenyellow;
+}
