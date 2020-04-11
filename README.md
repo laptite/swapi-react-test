@@ -1,3 +1,7 @@
+# PROJECT UPDATE: 4/22/2020
+** STARWARS API at swapi.co is down **
+
+---
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
